@@ -59,12 +59,13 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    @Cacheable(value = "allTodos", key = "#userId")
-    public List<TodoResponse> allTodosByUserId(Long userId) {
+    @Cacheable(value = "pagedTodos", key = "#userId + '-' + #page + '-' + #size")
+    public List<TodoResponse> allTodosByUserIdWithPagination(Long userId, int page, int size) {
+        int offset = (page - 1) * size; // Рассчитываем сдвиг
         return jdbcTemplate.query(
                 SELECT_ALL_TODOS,
                 (rs, rowNum) -> mapTodoResponse(rs),
-                userId
+                userId,size,offset
         );
     }
 

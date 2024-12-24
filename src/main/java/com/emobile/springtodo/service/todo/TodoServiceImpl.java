@@ -35,10 +35,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<TodoResponse> allTodosByPrincipal(Principal principal) {
+    public List<TodoResponse> allTodosByPrincipalWithPagination(Principal principal, int page, int size) {
         User user = userRepository.findByUsername(principal.getName()).orElseThrow();
-        return todoRepository.allTodosByUserId(user.getId());
+        return todoRepository.allTodosByUserIdWithPagination(user.getId(), page, size);
     }
+
 
     @Override
     public List<TodoResponse> allTodosCompletedByPrincipal(Principal principal) {
