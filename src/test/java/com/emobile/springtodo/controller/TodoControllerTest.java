@@ -62,7 +62,7 @@ class TodoControllerTest extends AbstractRestControllerBaseTest {
 
         todoService.saveTodo(request, principal);
 
-        List<TodoResponse> todos = todoRepository.allTodosByUserId(1L);
+        List<TodoResponse> todos = todoRepository.allTodosByUserIdWithPagination(1L,1,1);
         assertEquals(1, todos.size());
         assertEquals("New Todo", todos.get(0).getTitle());
 

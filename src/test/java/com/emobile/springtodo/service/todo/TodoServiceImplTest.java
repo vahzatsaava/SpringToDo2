@@ -21,6 +21,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,12 +73,12 @@ class TodoServiceImplTest {
         List<TodoResponse> todos = List.of(getTodoResponse());
         when(principal.getName()).thenReturn("testUser");
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(getUser()));
-        when(todoRepository.allTodosByUserId(1L)).thenReturn(todos);
+        when(todoRepository.allTodosByUserIdWithPagination(eq(1L),anyInt(),anyInt())).thenReturn(todos);
 
-        List<TodoResponse> result = todoService.allTodosByPrincipal(principal);
+        List<TodoResponse> result = todoService.allTodosByPrincipalWithPagination(principal,1,10);
 
         assertEquals(1, result.size());
-        verify(todoRepository).allTodosByUserId(1L);
+        verify(todoRepository).allTodosByUserIdWithPagination(1L,1,10);
     }
 
     @Test

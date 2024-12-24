@@ -35,11 +35,16 @@ public class TodoController {
         return ResponseEntity.ok(updatedTodo);
     }
 
-    @GetMapping
-    public ResponseEntity<List<TodoResponse>> getAllTodos(Principal principal) {
-        List<TodoResponse> todos = todoService.allTodosByPrincipal(principal);
+    @GetMapping("/paged")
+    public ResponseEntity<List<TodoResponse>> getAllTodosWithPagination(
+            Principal principal,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        List<TodoResponse> todos = todoService.allTodosByPrincipalWithPagination(principal, page, size);
         return ResponseEntity.ok(todos);
     }
+
 
     @GetMapping("/completed")
     public ResponseEntity<List<TodoResponse>> getAllCompletedTodos(Principal principal) {
